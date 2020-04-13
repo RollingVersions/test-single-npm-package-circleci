@@ -17,6 +17,8 @@ workflows:
 
       - publish:
           context: common-env
+          requires:
+            - publish-approval
           filters:
             branches:
               only: master
@@ -27,13 +29,13 @@ jobs:
       - image: circleci/node:12
     steps:
       - setup
-      - publish
+      - publish_dry_run
   publish:
     docker:
       - image: circleci/node:12
     steps:
       - setup
-      - publish_dry_run
+      - publish
 
 commands:
   setup:
