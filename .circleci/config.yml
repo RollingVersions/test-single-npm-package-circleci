@@ -1,0 +1,36 @@
+version: 2.1
+
+workflows:
+  release:
+    jobs:
+      - publish:
+          context: common-env
+          filters:
+            branches:
+              only: master
+
+jobs:
+  publish:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - setup
+      - publish
+
+commands:
+  setup:
+    description: 'Checkout and install dependencies'
+    steps:
+      - checkout
+      - run:
+          name: Versions
+          command: node -v && npm -v && yarn -v
+
+  publish:
+    steps:
+      - run:
+          name: NPM Auth
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: Release
+          command: npx rollingversions publish
