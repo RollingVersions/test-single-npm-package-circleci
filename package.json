@@ -1,7 +1,4 @@
 {
   "name": "@rollingversions/test-single-npm-package-circleci",
-  "dependencies": {
-    "libnpmconfig": "^1.2.1",
-    "npm-profile": "^5.0.1"
-  }
+  "publishConfig": {"access": "public"}
 }
