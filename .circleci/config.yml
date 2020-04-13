@@ -4,10 +4,10 @@ workflows:
   release:
     jobs:
       - publish-dry-run:
-        context: common-env
-        filters:
-          branches:
-            only: master
+          context: common-env
+          filters:
+            branches:
+              only: master
 
       - publish-approval:
           type: approval
