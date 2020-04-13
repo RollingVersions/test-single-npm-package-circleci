@@ -28,15 +28,15 @@ commands:
       - run:
           name: Install
           command: npm install
-      - run:
-          name: Test
-          command: node index.js
 
   publish:
     steps:
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Test
+          command: node index.js
       - run:
           name: Release
           command: npx @rollingversions/canary publish
