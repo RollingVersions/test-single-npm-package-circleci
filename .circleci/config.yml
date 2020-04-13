@@ -33,4 +33,4 @@ commands:
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Release
-          command: npx rollingversions publish
+          command: npx @rollingversions/canary publish
