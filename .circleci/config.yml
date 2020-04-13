@@ -25,12 +25,18 @@ commands:
       - run:
           name: Versions
           command: node -v && npm -v && yarn -v
+      - run:
+          name: Install
+          command: npm install
+      - run:
+          name: Test
+          command: node index.js
 
   publish:
     steps:
       - run:
-          name: NPM Auth
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run:
           name: Release
           command: npx @rollingversions/canary publish
