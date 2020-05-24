@@ -3,7 +3,7 @@ version: 2.1
 workflows:
   release:
     jobs:
-      - publish-dry-run:
+      - publish-canary:
           context: common-env
           filters:
             branches:
@@ -13,7 +13,7 @@ workflows:
           type: approval
           context: common-env
           requires:
-            - publish-dry-run
+            - publish-canary
 
       - publish:
           context: common-env
@@ -24,12 +24,12 @@ workflows:
               only: master
 
 jobs:
-  publish-dry-run:
+  publish-canary:
     docker:
       - image: circleci/node:12
     steps:
       - setup
-      - publish_dry_run
+      - publish_canary
   publish:
     docker:
       - image: circleci/node:12
@@ -49,11 +49,11 @@ commands:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
-  publish_dry_run:
+  publish_canary:
     steps:
       - run:
           name: Release
-          command: npx @rollingversions/canary publish --dry-run
+          command: npx @rollingversions/canary publish --canary $CIRCLE_BUILD_NUM
 
   publish:
     steps:
