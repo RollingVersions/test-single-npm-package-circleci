@@ -53,10 +53,10 @@ commands:
     steps:
       - run:
           name: Release
-          command: npx @rollingversions/canary publish --canary $CIRCLE_BUILD_NUM
+          command: npx rollingversions@canary publish --canary $CIRCLE_BUILD_NUM
 
   publish:
     steps:
       - run:
           name: Release
-          command: npx @rollingversions/canary publish
+          command: npx rollingversions@canary publish
