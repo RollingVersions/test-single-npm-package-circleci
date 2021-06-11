@@ -1,6 +1,22 @@
 version: 2.1
 
 workflows:
+  pull_request:
+    jobs:
+      - publish-canary-approval:
+          type: approval
+          context: common-env
+          filters:
+            branches:
+              ignore: master
+
+      - publish-canary-pr:
+          context: common-env
+          requires:
+            - publish-canary-approval
+          filters:
+            branches:
+              ignore: master
   release:
     jobs:
       - publish-canary:
@@ -24,6 +40,12 @@ workflows:
               only: master
 
 jobs:
+  publish-canary-pr:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - setup
+      - publish_canary_pr
   publish-canary:
     docker:
       - image: circleci/node:12
@@ -48,6 +70,12 @@ commands:
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
+  publish_canary_pr:
+    steps:
+      - run:
+          name: Release
+          command: npx rollingversions@canary publish --backend "https://staging.rollingversions.com" --canary $CIRCLE_BUILD_NUM --allow-any-branch
 
   publish_canary:
     steps:
